@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>DEFFA-IT | Solutions Informatiques Pro</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+
+  :root {
+    --bg: #121212; /* fond très sombre */
+    --text-primary: #eee; /* texte clair */
+    --text-muted: #bbb;
+    --card-bg: #1f1f1f;
+    --border: #333;
+    --shadow: rgba(0,0,0,0.6);
+    --focus-color: #f39c12; /* orange focus */
+  }
+
+  /* Reset & base */
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text-primary);
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+    line-height: 1.5;
+  }
+  a, button {
+    cursor: pointer;
+  }
+
+  nav {
+    position: sticky;
+    top: 0;
+    background: var(--card-bg);
+    border-bottom: 1px solid var(--border);
+    padding: 1rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 20;
+  }
+  nav strong {
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+  }
+
+  .hero {
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    color: var(--text-primary);
+    text-align: center;
+    padding: 2rem;
+    background-image: url('https://cdn.jsdelivr.net/gh/chatgpt-assets/marbre-black-white.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(18,18,18,0.75);
+    z-index: 0;
+  }
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+  .hero-content h1 {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+    line-height: 1.2;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 1s ease;
+  }
+  .hero-content p {
+    font-size: 1.25rem;
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 1.2s ease;
+  }
+  .hero-content.show h1,
+  .hero-content.show p {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  section {
+    max-width: 1100px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 4rem 1.5rem;
+    box-sizing: border-box;
+  }
+  h2 {
+    text-align: center;
+    font-size: 2.8rem;
+    margin-bottom: 3rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--text-primary);
+  }
+
+  .services {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
+    gap: 2rem;
+    width: 100%;
+  }
+  .service {
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 1rem;
+    border: 1px solid var(--border);
+    box-shadow: 0 8px 15px var(--shadow);
+    color: var(--text-primary);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    opacity: 0;
+    transform: translateY(30px);
+    cursor: pointer;
+    outline-offset: 4px;
+  }
+  .service.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .service:hover, .service:focus {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 30px var(--shadow);
+    outline: none;
+  }
+  .service:focus-visible {
+    outline: 3px solid var(--focus-color);
+    outline-offset: 4px;
+  }
+  .service img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 14px;
+    margin-bottom: 1rem;
+  }
+  .service h3 {
+    margin: 0 0 0.5rem 0;
+    font-weight: 700;
+  }
+  .service p {
+    color: var(--text-muted);
+    font-size: 1rem;
+    line-height: 1.4;
+  }
+
+  .explain {
+    display: flex;
+    gap: 3rem;
+    align-items: center;
+    flex-wrap: wrap;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 1s ease;
+  }
+  .explain.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .explain div {
+    flex: 1 1 400px;
+    color: var(--text-primary);
+  }
+  .explain img {
+    flex: 1 1 400px;
+    max-width: 100%;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px var(--shadow);
+  }
+
+  .reviews {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
+    gap: 2rem;
+  }
+  .review {
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 2rem;
+    font-style: italic;
+    color: var(--text-primary);
+    border: 1px solid var(--border);
+    box-shadow: 0 10px 20px var(--shadow);
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease;
+  }
+  .review.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .review strong {
+    display: block;
+    margin-top: 1.5rem;
+    font-style: normal;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .contact {
+    text-align: center;
+    font-size: 1.25rem;
+    line-height: 2;
+    color: var(--text-primary);
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 1s ease;
+  }
+  .contact.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  footer {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    border-top: 1px solid var(--border);
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .hero-content h1 {
+      font-size: 2.4rem;
+    }
+    .explain {
+      flex-direction: column;
+    }
+  }
+  @media (max-width: 600px) {
+    section {
+      padding: 3rem 1rem;
+    }
+    .services {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <strong>DEFFA-IT</strong>
+</nav>
+
+<header class="hero" role="banner" aria-label="Présentation de DEFFA-IT">
+  <div class="hero-content" id="hero-content" tabindex="-1">
+    <h1>Solutions informatiques<br>claires et efficaces</h1>
+    <p>Assistance, maintenance et accompagnement IT pour particuliers et professionnels.</p>
+  </div>
+</header>
+
+<section aria-labelledby="services-title">
+  <h2 id="services-title">Nos services</h2>
+  <div class="services" id="services">
+    <article class="service" tabindex="0">
+      <img src="https://images.unsplash.com/photo-1581091215367-59ab6c9c1d2c?auto=format&fit=crop&w=800&q=80" alt="Ordinateur et maintenance informatique" />
+      <h3>Dépannage informatique</h3>
+      <p>Diagnostic rapide et résolution de pannes matérielles et logicielles.</p>
+    </article>
+    <article class="service" tabindex="0">
+      <img src="https://images.unsplash.com/photo-1556155092-8707de31f9c4?auto=format&fit=crop&w=800&q=80" alt="Protection de données et sécurité informatique" />
+      <h3>Maintenance & sécurité</h3>
+      <p>Protection des données, sauvegardes et prévention des incidents.</p>
+    </article>
+    <article class="service" tabindex="0">
+      <img src="https://images.unsplash.com/photo-1587825140708-dfaf72ae4b04?auto=format&fit=crop&w=800&q=80" alt="Installation réseaux et matériels" />
+      <h3>Installation & réseaux</h3>
+      <p>Postes de travail, Wi-Fi, réseaux locaux et périphériques.</p>
+    </article>
+    <article class="service" tabindex="0">
+      <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80" alt="Conseil et accompagnement informatique" />
+      <h3>Conseil & accompagnement</h3>
+      <p>Solutions adaptées à vos usages et à votre budget.</p>
+    </article>
+  </div>
+</section>
+
+<section aria-labelledby="approche-title">
+  <div class="explain" id="explain">
+    <div>
+      <h2 id="approche-title">Une approche professionnelle</h2>
+      <p>Chaque mission commence par une compréhension claire de vos besoins. L’objectif est simple : des solutions fiables, compréhensibles et durables.</p>
+    </div>
+    <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=800&q=80" alt="Professionnel informatique travaillant" />
+  </div>
+</section>
+
+<section aria-labelledby="avis-title">
+  <h2 id="avis-title">Avis clients</h2>
+  <div class="reviews" id="reviews">
+    <blockquote class="review" tabindex="0">
+      “Très professionnel, clair et efficace.”
+      <strong>Client professionnel</strong>
+    </blockquote>
+    <blockquote class="review" tabindex="0">
+      “Service sérieux, je recommande à 100 %.”
+      <strong>Entreprise locale</strong>
+    </blockquote>
+    <blockquote class="review" tabindex="0">
+      “Intervention rapide et bien expliquée.”
+      <strong>Particulier</strong>
+    </blockquote>
+  </div>
+</section>
+
+<section aria-labelledby="contact-title">
+  <h2 id="contact-title">Contact</h2>
+  <div class="contact" id="contact">
+    📞 <strong>06 18 29 14 84</strong><br />
+    📧 <strong>ilan.deffaud@gmail.com</strong>
+  </div>
+</section>
+
+<footer>
+  © 2026 – DEFFA-IT • Solutions Informatiques
+</footer>
+
+<script>
+  // Animations au scroll
+  function animateOnScroll() {
+    const heroContent = document.getElementById('hero-content');
+    const services = document.querySelectorAll('.service');
+    const explain = document.getElementById('explain');
+    const reviews = document.querySelectorAll('.review');
+    const contact = document.getElementById('contact');
+
+    if (window.scrollY > 50) {
+      heroContent.classList.add('show');
+    }
+
+    services.forEach((s) => {
+      if (s.getBoundingClientRect().top < window.innerHeight - 100) {
+        s.classList.add('show');
+      }
+    });
+
+    if (explain.getBoundingClientRect().top < window.innerHeight - 100) {
+      explain.classList.add('show');
+    }
+
+    reviews.forEach((r) => {
+      if (r.getBoundingClientRect().top < window.innerHeight - 100) {
+        r.classList.add('show');
+      }
+    });
+
+    if (contact.getBoundingClientRect().top < window.innerHeight - 100) {
+      contact.classList.add('show');
+    }
+  }
+
+  window.addEventListener('scroll', animateOnScroll);
+  window.addEventListener('load', animateOnScroll);
+</script>
+</body>
+</html>
